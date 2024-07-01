@@ -28,7 +28,7 @@
             class="bg-gray-100 p-4 rounded-lg shadow cursor-move"
             draggable="true"
             @dragstart="onDragStart($event, course, level)"
-            @click="isMobile && openModal(course)"
+            @click="(isMobile || dropdown) && openModal(course)"
           >
             <h3 class="text-md font-semibold text-red-800">{{ course.name }}</h3>
             <p class="text-sm">Hours: {{ course.hours }}</p>
@@ -79,7 +79,7 @@ export default {
     const showModal = ref(false);
     const currentCourse = ref(null);
     const newLevel = ref(null);
-
+    const dropdown = ref(false);
     const coursesByLevel = computed(() => {
       return coursesList.value.reduce((acc, course) => {
         if (!acc[course.level]) acc[course.level] = [];
@@ -118,6 +118,7 @@ export default {
 
     const checkIfMobile = () => {
       isMobile.value = window.innerWidth <= 768;
+      window.innerHeight <= 600 ? (dropdown.value = true) : (dropdown.value = false);
     };
 
     const openModal = (course) => {
@@ -157,6 +158,7 @@ export default {
       onDrop,
       selectedLevel,
       isMobile,
+      dropdown,
       showModal,
       openModal,
       closeModal,
